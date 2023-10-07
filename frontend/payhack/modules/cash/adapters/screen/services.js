@@ -4,9 +4,11 @@ import { Button } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Loading from "../../../../kernel/components/Loading";
 
+
 export default function Services({ navigation, route: { params: { user } } }) {
 
   const [selectedServices, setSelectedServices] = useState([]);
+  const [enabledButton, setEnabledButton] = useState(true)
 
   const servicios = ["Agua", "Luz", "Teléfono", "Internet"];
 
@@ -17,7 +19,6 @@ export default function Services({ navigation, route: { params: { user } } }) {
       setSelectedServices([...selectedServices, service]);
     }
   };
-
   return (
     <KeyboardAwareScrollView>
       <View style={styles.viewForm}>
@@ -57,6 +58,7 @@ export default function Services({ navigation, route: { params: { user } } }) {
           title="Siguiente"
           containerStyle={styles.btnContainer}
           buttonStyle={styles.btn}
+          disabled={!Object.keys(selectedServices)[0]}
           onPress={() => {
             navigation.navigate("unitPrice", { selectedServices, user });
           }}
