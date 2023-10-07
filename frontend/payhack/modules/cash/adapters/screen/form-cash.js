@@ -5,6 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Loading from "../../../../kernel/components/Loading";
 import axios from "../../../../kernel/http-client.gateway";
 import { Button, Icon, Input } from "@rneui/base";
+import Alert from '../../../../kernel/components/Alert';
 
 
 const FormCash = ({ navigation, route: { params: { user, pricePayload } } }) => {
@@ -28,6 +29,9 @@ const FormCash = ({ navigation, route: { params: { user, pricePayload } } }) => 
     const [error, setError] = useState({})
     const [show, setShow] = useState(false);
     const [data, setData] = useState(user);
+    const [showModal, setShowModal] = useState(false)
+    const [modalText, setModalText] = useState('')
+    const [type, setType] = useState('')
 
     const changePayLoad = (e, type) => {
         setData({ ...data, [type]: e.nativeEvent.text })
@@ -62,8 +66,11 @@ const FormCash = ({ navigation, route: { params: { user, pricePayload } } }) => 
         try {
             const response = await axios.doPost('/orders', JSON.stringify(requesPayload));
             setShow(false);
-            navigation.navigate('ticketOxxo', { ticket: await response.data.charges.data[0], user})
+            navigation.navigate('ticketOxxo', { ticket: await response.data.charges.data[0], user })
         } catch (error) {
+            setShowModal(true),
+            setType('error');
+            setModalText(`Ha ocurrido un error al calcular el monto total. Recuerda que el valor mínimo es de $10 MXN.`)
             console.log(error);
             setShow(false);
         }
@@ -162,7 +169,7 @@ const FormCash = ({ navigation, route: { params: { user, pricePayload } } }) => 
                 </View>
             </View>
             <Loading show={show} text='Registrando' />
-
+            <Alert setShow={setShowModal} show={showModal} text={modalText} type={type} />
         </KeyboardAwareScrollView>
     )
 }
