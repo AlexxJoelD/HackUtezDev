@@ -4,7 +4,7 @@ import React, {useState} from 'react'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import Loading from "../../../../kernel/components/Loading";
 import {useNavigation} from "@react-navigation/native";
-import {Button, Icon, Input} from "@rneui/base";
+import {Button, Icon, Input, Image} from "@rneui/base";
 import {MockupData} from "../../../../kernel/mockup";
 
 
@@ -49,9 +49,11 @@ const Login = ({navigation}) => {
                         color: '#1AA07B',
                         marginVertical: 15
                     }}>Iniciar Sesión</Text>
-
-
-
+                      <Image
+                                source={require('../../../../assets/userAccount.png')}
+                                resizeMode='center'
+                                style={styles.logo}
+                            />
 
                     <Button
                         title='Entrar'
@@ -73,7 +75,8 @@ const styles = StyleSheet.create({
     logo: {
         width: '100%',
         height: 159,
-        marginTop: 100
+        marginTop: 0,
+        marginBottom: 10
     },
     viewForm: {
         marginHorizontal: 20

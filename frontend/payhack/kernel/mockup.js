@@ -4,7 +4,7 @@ export const MockupData = [
         "name": "Joel",
         "lastName": "Gonzalez",
         "motherLastName": "Gonzalez",
-        "email": "joel@gmail.com",
+        "email": "floressantanapablosamuel@gmail.com",
         "phone": "1234567890"
     },
     {
@@ -12,7 +12,7 @@ export const MockupData = [
         "name": "Maria",
         "lastName": "Perez",
         "motherLastName": "Lopez",
-        "email": "maria@gmail.com",
+        "email": "floressantanapablosamuel@gmail.com",
         "phone": "2345678901"
     },
     {
@@ -20,7 +20,7 @@ export const MockupData = [
         "name": "Carlos",
         "lastName": "Hernandez",
         "motherLastName": "Martinez",
-        "email": "carlos@gmail.com",
+        "email": "floressantanapablosamuel@gmail.com",
         "phone": "3456789012"
     },
     {
@@ -28,7 +28,7 @@ export const MockupData = [
         "name": "Ana",
         "lastName": "Sanchez",
         "motherLastName": "Castillo",
-        "email": "ana@gmail.com",
+        "email": "floressantanapablosamuel@gmail.com",
         "phone": "4567890123"
     },
     {
@@ -36,7 +36,7 @@ export const MockupData = [
         "name": "Pedro",
         "lastName": "Torres",
         "motherLastName": "Ramirez",
-        "email": "pedro@gmail.com",
+        "email": "floressantanapablosamuel@gmail.com",
         "phone": "5678901234"
     },
     {
@@ -44,7 +44,7 @@ export const MockupData = [
         "name": "Laura",
         "lastName": "Gutierrez",
         "motherLastName": "Ruiz",
-        "email": "laura@gmail.com",
+        "email": "floressantanapablosamuel@gmail.com",
         "phone": "6789012345"
     },
     {
@@ -52,7 +52,7 @@ export const MockupData = [
         "name": 'Juan',
         'lastName': 'Morales',
         'motherLastName': 'Guerrero',
-        'email': 'juan@gmail.com',
+        'email': 'floressantanapablosamuel@gmail.com',
         'phone': '7890123456'
     },
     {
@@ -60,7 +60,7 @@ export const MockupData = [
         'name': 'Sofia',
         'lastName': 'Aguilar',
         'motherLastName': 'Pena',
-        'email': 'sofia@gmail.com',
+        'email': 'floressantanapablosamuel@gmail.com',
         'phone': '8901234567'
     },
     {
@@ -68,7 +68,7 @@ export const MockupData = [
         'name': 'Luis',
         'lastName': 'Vargas',
         'motherLastName': 'Mendoza',
-        'email': 'luis@gmail.com',
+        'email': 'floressantanapablosamuel@gmail.com',
         'phone': '9012345678'
     },
     {
@@ -76,7 +76,7 @@ export const MockupData = [
         'name': 'Carmen',
         'lastName': 'Rojas',
         'motherLastName': 'Reyes',
-        'email': 'carmen@gmail.com',
+        'email': 'floressantanapablosamuel@gmail.com',
         'phone': '0123456789'
     }
 ]

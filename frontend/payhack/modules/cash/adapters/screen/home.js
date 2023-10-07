@@ -4,7 +4,7 @@ import React, {useState} from 'react'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import Loading from "../../../../kernel/components/Loading";
 import {useNavigation} from "@react-navigation/native";
-import {Button, Icon, Input} from "@rneui/base";
+import {Button, Icon, Input, Image} from "@rneui/base";
 
 
 const Home = ({navigation, route:{params:{user}}}) => {
@@ -35,6 +35,13 @@ const Home = ({navigation, route:{params:{user}}}) => {
                         marginVertical: 15
                     }}>Hola {data.name}</Text>
 
+                            <Image
+                                source={require('../../../../assets/cashtransfer.png')}
+                                resizeMode='contain'
+                                style={styles.logo}
+                                
+                            />
+
 
                     <Button
                         title='Siguiente'
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
     logo: {
         width: '100%',
         height: 159,
-        marginTop: 100
+        
     },
     viewForm: {
         marginHorizontal: 20
