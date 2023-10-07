@@ -1,27 +1,17 @@
-import {StyleSheet, Text, View} from 'react-native'
-import React, {useState} from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
 
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Loading from "../../../../kernel/components/Loading";
-import {Button, Icon, Input} from "@rneui/base";
+import { Button, Icon, Input } from "@rneui/base";
 
 
 const MethodPay = ({navigation, route}) => {
-
-    console.log(route.params);
     const pricePayload = route.params;
     const {user} = route.params;
 
-    console.log('MethodPay -> user', JSON.stringify(user));
-
     const [show, setShow] = useState(false);
     const [data, setData] = useState(false);
-
-
-    const create = () => {
-        console.log('Code ->' + JSON.stringify(data));
-    }
-
 
     return (
         <KeyboardAwareScrollView>
@@ -40,18 +30,16 @@ const MethodPay = ({navigation, route}) => {
                         title='Tarjeta'
                         containerStyle={styles.btnContainer}
                         buttonStyle={styles.btn}
-                        onPress={create}
                     />
 
                     <Button
                         title='Paypal'
                         containerStyle={styles.btnContainer}
                         buttonStyle={styles.btn}
-                        onPress={create}
                     />
 
                     <Button
-                        title='Tienda fisica'
+                        title='Tienda Física'
                         containerStyle={styles.btnContainer}
                         buttonStyle={styles.btn}
                         onPress={() => {
@@ -62,7 +50,7 @@ const MethodPay = ({navigation, route}) => {
                         }}/>
                 </View>
             </View>
-            <Loading show={false} text='Registrando'/>
+            <Loading show={false} text='Registrando' />
 
         </KeyboardAwareScrollView>
     )

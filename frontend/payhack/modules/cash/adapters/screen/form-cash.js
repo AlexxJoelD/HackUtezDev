@@ -1,88 +1,78 @@
-import {StyleSheet, Text, View} from 'react-native'
-import React, {useState} from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
 
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Loading from "../../../../kernel/components/Loading";
 import axios from "../../../../kernel/http-client.gateway";
-import {Button, Icon, Input} from "@rneui/base";
+import { Button, Icon, Input } from "@rneui/base";
 
 
-const FormCash = ({navigation, route: {params: {user, pricePayload}}}) => {
+const FormCash = ({ navigation, route: { params: { user, pricePayload } } }) => {
+    const lineItems = []
 
-    console.log('FormCash -> user', JSON.stringify(user));
-
+    const objetosT = Object.keys(pricePayload.pricesPayload).map((key) => {
+        return {
+            name: key,
+            unit_price: pricePayload.pricesPayload[key],
+            quantity: 1
+        }
+    })
+    const payLoad = {
+        name: '',
+        lastName: '',
+        motherLastName: '',
+        email: '',
+        phone: '',
+    }
 
     const [error, setError] = useState({})
     const [show, setShow] = useState(false);
     const [data, setData] = useState(user);
-    const [ticket, setTicket] = useState('')
 
     const changePayLoad = (e, type) => {
-        setData({...data, [type]: e.nativeEvent.text})
+        setData({ ...data, [type]: e.nativeEvent.text })
     }
 
 
-    const create = () => {
-        console.log('Code ->' + JSON.stringify(data));
-    }
+    const create = async () => {
+        setShow(true);
+        const currentDate = new Date();
+        currentDate.setHours(currentDate.getHours() + 1);
+        const expirationDateAux = Math.floor(currentDate / 1000);
+        const expirationDate = expirationDateAux.toString();
 
-
-    const next = async () => {
-
-        try {
-            const data = await axios.doPost('/orders',
-
-                {
-                    "line_items": [{
-                        "name": "Tacos",
-                        "unit_price": 1000,
-                        "quantity": 1
-                    }],
-                    "shipping_lines": [{
-                        "amount": 1500,
-                        "carrier": "FEDEX"
-                    }], //shipping_lines - physical goods only
-                    "currency": "MXN",
-                    "customer_info": {
-                        "name": "Fulanito Pérez",
-                        "email": "i20213tn003@utez.edu.mx",
-                        "phone": "+5218181818181"
-                    },
-                    "shipping_contact": {
-                        "address": {
-                            "street1": "Calle 123, int 2",
-                            "postal_code": "06100",
-                            "country": "MX"
-                        }
-                    }, //shipping_contact - required only for physical goods
-                    "charges": [{
-                        "payment_method": {
-                            "type": "spei"
-                        }
-                    }]
+        const requesPayload = {
+            line_items: objetosT,
+            currency: "MXN",
+            customer_info: {
+                name: `${data.name} ${data.lastName} ${data.motherLastName}`,
+                email: data.email,
+                phone: data.phone
+            },
+            metadata: {
+                datos_extra: "1234"
+            },
+            charges: [{
+                payment_method: {
+                    type: "cash",
+                    expires_at: expirationDate
                 }
-            )
-
-
-
-
-            navigation.navigate('ticketOxxo', {ticket: data.data})
-
-
-        } catch (e) {
-            console.log(e)
+            }]
         }
-
-
-        // navigation.navigate('ticketOxxo')
+        try {
+            const response = await axios.doPost('/orders', JSON.stringify(requesPayload));
+            setShow(false);
+            navigation.navigate('ticketOxxo', { ticket: await response.data.charges.data[0], user})
+        } catch (error) {
+            console.log(error);
+            setShow(false);
+        }
     }
-
 
     return (
         <KeyboardAwareScrollView>
             <View style={styles.viewForm}>
                 <View style={styles.container}>
-
                     <Text style={{
                         textAlign: 'center',
                         fontSize: 30,
@@ -97,7 +87,7 @@ const FormCash = ({navigation, route: {params: {user, pricePayload}}}) => {
                     <Input
                         placeholder='Nombre(s)'
                         rightIcon={
-                            <Icon type='material-community' name='pencil' size={22}/>
+                            <Icon type='material-community' name='pencil' size={22} />
                         }
                         containerStyle={styles.input}
                         onChange={(e) => changePayLoad(e, 'name')}
@@ -111,7 +101,7 @@ const FormCash = ({navigation, route: {params: {user, pricePayload}}}) => {
                     <Input
                         placeholder='Apellido Paterno'
                         rightIcon={
-                            <Icon type='material-community' name='pencil' size={22}/>
+                            <Icon type='material-community' name='pencil' size={22} />
                         }
                         containerStyle={styles.input}
                         onChange={(e) => changePayLoad(e, 'lastName')}
@@ -125,7 +115,7 @@ const FormCash = ({navigation, route: {params: {user, pricePayload}}}) => {
                     <Input
                         placeholder='Apellido Materno'
                         rightIcon={
-                            <Icon type='material-community' name='pencil' size={22}/>
+                            <Icon type='material-community' name='pencil' size={22} />
                         }
                         containerStyle={styles.input}
                         onChange={(e) => changePayLoad(e, 'motherLastName')}
@@ -139,7 +129,7 @@ const FormCash = ({navigation, route: {params: {user, pricePayload}}}) => {
                     <Input
                         placeholder='example@gmail.com'
                         rightIcon={
-                            <Icon type='material-community' name='email' size={22}/>
+                            <Icon type='material-community' name='email' size={22} />
                         }
                         containerStyle={styles.input}
                         onChange={(e) => changePayLoad(e, 'email')}
@@ -151,9 +141,9 @@ const FormCash = ({navigation, route: {params: {user, pricePayload}}}) => {
                     <Text style={styles.label}>Teléfono</Text>
                     <Input
                         placeholder='Teléfono'
-                        keyboardType='email-address'
+                        keyboardType='number-pad'
                         rightIcon={
-                            <Icon type='material-community' name='phone' size={22}/>
+                            <Icon type='material-community' name='phone' size={22} />
                         }
                         containerStyle={styles.input}
                         onChange={(e) => changePayLoad(e, 'phone')}
@@ -169,16 +159,9 @@ const FormCash = ({navigation, route: {params: {user, pricePayload}}}) => {
                         buttonStyle={styles.btn}
                         onPress={create}
                     />
-
-                    <Button
-                        title='Siguiente'
-                        containerStyle={styles.btnContainer}
-                        buttonStyle={styles.btn}
-                        onPress={next}
-                    />
                 </View>
             </View>
-            <Loading show={false} text='Registrando'/>
+            <Loading show={show} text='Registrando' />
 
         </KeyboardAwareScrollView>
     )

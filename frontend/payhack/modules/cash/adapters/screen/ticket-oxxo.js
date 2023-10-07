@@ -1,33 +1,48 @@
-import {StyleSheet, Text, View} from 'react-native'
-import React, {useState} from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
 
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Loading from "../../../../kernel/components/Loading";
-import {useNavigation} from "@react-navigation/native";
-import {Button, Icon, Input, Image} from "@rneui/base";
+import { useNavigation } from "@react-navigation/native";
+import { Button, Icon, Input, Image } from "@rneui/base";
+import Modal from '../../../../kernel/components/Modal';
 
 
-const TicketOxxo = ({navigation,  route:{params:{ticket}}}) => {
-
-    console.log('TicketOxxo -> ticket', JSON.stringify(ticket));
-
+const TicketOxxo = ({ navigation, route: { params: { ticket, user} } }) => {
     const [error, setError] = useState({})
     const [show, setShow] = useState(false);
     const [data, setData] = useState(ticket);
+    const [showModal, setShowModal] = useState(false)
+    const [modalText, setModalText] = useState('')
+    const [title, setTitle] = useState('')
 
-    const changePayLoad = (e, type) => {
-        setData({...data, [type]: e.nativeEvent.text})
-    }
+    const expirationDate = ticket.payment_method.expires_at;
 
+    const convertirMarcaDeTiempoAFecha = (timestamp) => {
+        const fecha = new Date();
+        const fecha2 = new Date(fecha.getTime() + timestamp);
 
-    const create = () => {
-        console.log('Code ->' + JSON.stringify(data));
+        const año = fecha2.getFullYear();
+        const mes = fecha2.getMonth() + 1;
+        const dia = fecha2.getDate();
+        const hora = fecha2.getHours();
+        const minuto = fecha2.getMinutes();
+        const segundo = fecha2.getSeconds();
+
+        const fechaFormateada = `${dia}/${mes}/${año} ${hora}:${minuto}`;
+
+        return fechaFormateada;
     }
 
     const next = () => {
-        // navigation.navigate('home')
-    }
+        setTitle('¡Recuerda!');
+        setModalText(`Tu fecha límite para realizar tu pago es ${convertirMarcaDeTiempoAFecha(expirationDate)}, si por algún motivo no realizas el pago, esta transacción se cancelará automáticamente.
 
+        Para tu comodidad, te enviaremos un correo electrónico un día antes de la fecha límite.
+        
+        Ten un excelente día.`);
+        setShowModal(true);
+    }
 
     return (
         <KeyboardAwareScrollView>
@@ -59,7 +74,7 @@ const TicketOxxo = ({navigation,  route:{params:{ticket}}}) => {
                             />
                         </View>
 
-                        <View style={{flex: 2, alignItems: 'center', justifyContent: 'center'}}>
+                        <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
                             <Text style={{
                                 fontSize: 29,
                                 fontWeight: 'bold'
@@ -80,7 +95,7 @@ const TicketOxxo = ({navigation,  route:{params:{ticket}}}) => {
                     </View>
 
 
-                    <Text style={{...styles.label, marginTop:15}}>Número de referencia</Text>
+                    <Text style={{ ...styles.label, marginTop: 15 }}>Número de referencia</Text>
 
                     <Text style={{
                         textAlign: 'center',
@@ -91,16 +106,16 @@ const TicketOxxo = ({navigation,  route:{params:{ticket}}}) => {
                         borderWidth: 1,
                         borderColor: '#1AA07B',
                         marginHorizontal: 30
-                    }}>35265-72575-323552</Text>
+                    }}>{ticket.payment_method.reference}</Text>
 
-                    <Text style={{...styles.label, textAlign: 'left', marginLeft: 14, marginTop:20}}>Instrucciones
+                    <Text style={{ ...styles.label, textAlign: 'left', marginLeft: 14, marginTop: 20 }}>Instrucciones
                         de pago</Text>
 
                     <Text style={styles.text}>
                         Acude a la tienda Oxxo más cercana y proporciona al cajero el número de referencia.
                     </Text>
 
-                    <Text style={{...styles.text, fontWeight:'bold'}}>
+                    <Text style={{ ...styles.text, fontWeight: 'bold' }}>
                         Conserva tu comprobante de pago.
                     </Text>
 
@@ -113,27 +128,20 @@ const TicketOxxo = ({navigation,  route:{params:{ticket}}}) => {
                         borderStyle: 'solid',
                         borderWidth: 1,
                         borderColor: '#1AA07B',
-                        marginVertical:30,
+                        marginVertical: 30,
                         marginHorizontal: 15
                     }}>Al completar los pasos, recibirás en breve un correo electrónico con la orden de pago.</Text>
 
-
                     <Button
-                        title='Generar código'
-                        containerStyle={styles.btnContainer}
-                        buttonStyle={styles.btn}
-                        onPress={create}
-                    />
-
-                    <Button
-                        title='Siguiente'
+                        title='Inicio'
                         containerStyle={styles.btnContainer}
                         buttonStyle={styles.btn}
                         onPress={next}
                     />
                 </View>
             </View>
-            <Loading show={false} text='Registrando'/>
+            <Modal setShow={setShowModal} show={showModal} text={modalText} title={title} user={user} />
+            <Loading show={false} text='Registrando' />
 
         </KeyboardAwareScrollView>
     )
@@ -148,8 +156,8 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 21,
-        marginLeft:15,
-        marginVertical:3
+        marginLeft: 15,
+        marginVertical: 3
     },
     viewForm: {
         marginHorizontal: 20
