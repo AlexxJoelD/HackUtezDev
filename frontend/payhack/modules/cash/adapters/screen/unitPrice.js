@@ -48,7 +48,7 @@ const UnitPrice = ({ route, navigation }) => {
               <Text style={styles.label}>{service}</Text>
               <Input
                 style={styles.input}
-                placeholder="00.00"
+                placeholder="3000"
                 rightIcon={
                   <Icon
                     type="material-community"
@@ -62,7 +62,7 @@ const UnitPrice = ({ route, navigation }) => {
             </View>
           ))}
 
-          <Text style={{marginLeft: 10, marginVertical: 10}}>Nota: Los valores ingresados son centavos</Text>
+          <Text style={{marginLeft: 13, marginVertical: 10, color:'#000000', fontSize:18, fontWeight:'bold'}}>Nota: Los valores ingresados son centavos</Text>
           <Button
             title="Siguiente"
             containerStyle={styles.btnContainer}
@@ -113,9 +113,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   label: {
+    marginLeft: 10,
     color: "#1AA07B",
     textAlign: "left",
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 25,
   },
 });
