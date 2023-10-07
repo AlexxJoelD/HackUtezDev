@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, ToastAndroid, View } from 'react-native'
 import React, { useState } from 'react'
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -6,9 +6,16 @@ import Loading from "../../../../kernel/components/Loading";
 import { Button, Icon, Input } from "@rneui/base";
 
 
-const MethodPay = ({navigation, route}) => {
+const MethodPay = ({ navigation, route }) => {
+    const showToast = () => {
+        ToastAndroid.showWithGravity(
+            '¡Función disponible pronto!',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+        );
+    };
     const pricePayload = route.params;
-    const {user} = route.params;
+    const { user } = route.params;
 
     const [show, setShow] = useState(false);
     const [data, setData] = useState(false);
@@ -30,12 +37,14 @@ const MethodPay = ({navigation, route}) => {
                         title='Tarjeta'
                         containerStyle={styles.btnContainer}
                         buttonStyle={styles.btn}
+                        onPress={() => showToast()}
                     />
 
                     <Button
                         title='Paypal'
                         containerStyle={styles.btnContainer}
                         buttonStyle={styles.btn}
+                        onPress={() => showToast()}
                     />
 
                     <Button
@@ -47,7 +56,7 @@ const MethodPay = ({navigation, route}) => {
                                 pricePayload,
                                 user: user,
                             });
-                        }}/>
+                        }} />
                 </View>
             </View>
             <Loading show={false} text='Registrando' />
