@@ -19,7 +19,7 @@ const RentStack = () => {
             }}>
 
             <Stack.Screen name='formCash' component={FormCash} options={{ title: 'Verificar' }} />
-            <Stack.Screen name='ticketOxxo' component={TicketOxxo} options={{ title: 'Ticket' }} />
+            <Stack.Screen name='ticketOxxo' component={TicketOxxo} options={{ title: 'Resumen de pago' }} />
             <Stack.Screen name='home' component={Home} options={{ title: 'Inicio' }} />
             <Stack.Screen name='login' component={Login} options={{ title: 'Iniciar sesión' }} />
 

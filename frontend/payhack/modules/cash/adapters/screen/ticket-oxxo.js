@@ -1,22 +1,24 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import {StyleSheet, Text, View} from 'react-native'
+import React, {useState} from 'react'
 
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import Loading from "../../../../kernel/components/Loading";
-import { useNavigation } from "@react-navigation/native";
-import { Button, Icon, Input, Image } from "@rneui/base";
+import {useNavigation} from "@react-navigation/native";
+import {Button, Icon, Input, Image} from "@rneui/base";
 import Modal from '../../../../kernel/components/Modal';
 
 
-const TicketOxxo = ({ navigation, route: { params: { ticket, user} } }) => {
+const TicketOxxo = ({navigation, route: {params: {ticket, user}}}) => {
     const [error, setError] = useState({})
     const [show, setShow] = useState(false);
     const [data, setData] = useState(ticket);
     const [showModal, setShowModal] = useState(false)
     const [modalText, setModalText] = useState('')
     const [title, setTitle] = useState('')
+    const [showCodeB, setShowCodeB] = useState(false);
 
     const expirationDate = ticket.payment_method.expires_at;
+    const {barcode_url} = ticket.payment_method;
 
     const convertirMarcaDeTiempoAFecha = (timestamp) => {
         const fecha = new Date();
@@ -44,6 +46,10 @@ const TicketOxxo = ({ navigation, route: { params: { ticket, user} } }) => {
         setShowModal(true);
     }
 
+    const showCode = () => {
+        setShowCodeB(!showCodeB);
+    }
+
     return (
         <KeyboardAwareScrollView>
             <View style={styles.viewForm}>
@@ -65,7 +71,7 @@ const TicketOxxo = ({ navigation, route: { params: { ticket, user} } }) => {
                     }}>
                         <View style={{
                             flex: 1,
-                            paddingLeft: 50,
+                            paddingLeft: 40,
                         }}>
                             <Image
                                 source={require('../../../../assets/otsa.jpg')}
@@ -74,7 +80,7 @@ const TicketOxxo = ({ navigation, route: { params: { ticket, user} } }) => {
                             />
                         </View>
 
-                        <View style={{ flex: 2, alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{flex: 2, alignItems: 'center', justifyContent: 'center'}}>
                             <Text style={{
                                 fontSize: 29,
                                 fontWeight: 'bold'
@@ -84,6 +90,7 @@ const TicketOxxo = ({ navigation, route: { params: { ticket, user} } }) => {
                                 fontSize: 32,
                                 fontWeight: 'bold',
                                 color: '#1AA07B',
+                                marginVertical: 10
                             }}>${ticket.amount | 0}</Text>
                             <Text style={{
                                 fontSize: 15,
@@ -95,27 +102,52 @@ const TicketOxxo = ({ navigation, route: { params: { ticket, user} } }) => {
                     </View>
 
 
-                    <Text style={{ ...styles.label, marginTop: 15 }}>Número de referencia</Text>
+                    {
+                        !showCodeB && (
+                            <View>
+                                <Text style={{...styles.label, marginTop: 15, marginBottom:15}}>Número de referencia</Text>
+                                <Text style={{
+                                    textAlign: 'center',
+                                    fontSize: 30,
+                                    fontWeight: 'bold',
+                                    color: '#1AA07B',
+                                    borderStyle: 'solid',
+                                    borderWidth: 1,
+                                    borderColor: '#1AA07B',
+                                    marginHorizontal: 30
+                                }}>{ticket.payment_method.reference}</Text>
+                            </View>
+                        )
+                    }
 
-                    <Text style={{
-                        textAlign: 'center',
-                        fontSize: 30,
-                        fontWeight: 'bold',
-                        color: '#1AA07B',
-                        borderStyle: 'solid',
-                        borderWidth: 1,
-                        borderColor: '#1AA07B',
-                        marginHorizontal: 30
-                    }}>{ticket.payment_method.reference}</Text>
 
-                    <Text style={{ ...styles.label, textAlign: 'left', marginLeft: 14, marginTop: 20 }}>Instrucciones
+                    {
+                        showCodeB && (
+                            <View>
+                                <Text style={{...styles.label, marginTop: 15}}>Código de barras</Text>
+
+                                <Image
+                                    source={{uri: barcode_url}}
+                                    resizeMode='contain'
+                                    style={{
+                                        marginVertical: 10,
+                                        width: '100%',
+                                        height: 100,
+                                    }}
+                                />
+                            </View>
+                        )
+                    }
+
+
+                    <Text style={{...styles.label, textAlign: 'left', marginLeft: 14, marginTop: 20}}>Instrucciones
                         de pago</Text>
 
                     <Text style={styles.text}>
                         Acude a la tienda Oxxo más cercana y proporciona al cajero el número de referencia.
                     </Text>
 
-                    <Text style={{ ...styles.text, fontWeight: 'bold' }}>
+                    <Text style={{...styles.text, fontWeight: 'bold'}}>
                         Conserva tu comprobante de pago.
                     </Text>
 
@@ -132,6 +164,14 @@ const TicketOxxo = ({ navigation, route: { params: { ticket, user} } }) => {
                         marginHorizontal: 15
                     }}>Al completar los pasos, recibirás en breve un correo electrónico con la orden de pago.</Text>
 
+
+                    <Button
+                        title='Código de barras'
+                        containerStyle={styles.btnContainer}
+                        buttonStyle={styles.btn}
+                        onPress={showCode}
+                    />
+
                     <Button
                         title='Inicio'
                         containerStyle={styles.btnContainer}
@@ -140,8 +180,8 @@ const TicketOxxo = ({ navigation, route: { params: { ticket, user} } }) => {
                     />
                 </View>
             </View>
-            <Modal setShow={setShowModal} show={showModal} text={modalText} title={title} user={user} />
-            <Loading show={false} text='Registrando' />
+            <Modal setShow={setShowModal} show={showModal} text={modalText} title={title} user={user}/>
+            <Loading show={false} text='Registrando'/>
 
         </KeyboardAwareScrollView>
     )
