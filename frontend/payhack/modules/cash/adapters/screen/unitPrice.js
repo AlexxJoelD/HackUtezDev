@@ -7,13 +7,11 @@ import { Button, Icon, Input } from "@rneui/base";
 
 const UnitPrice = ({ route, navigation }) => {
   const { selectedServices, user } = route.params;
-  const payLoad = {
-    price: ""
-  };
 
   const [payload, setPayload] = useState({});
 
   const changePayLoad = (text, service) => {
+    console.log(payload);
     setPayload((prevPayload) => ({
       ...prevPayload,
       [service]: text,
@@ -23,9 +21,9 @@ const UnitPrice = ({ route, navigation }) => {
   if (!selectedServices || selectedServices.length === 0) {
     return null; // Manejar el caso en que no hay servicios seleccionados
   }
-  const [error, setError] = useState(payLoad);
+  const [error, setError] = useState(payload);
   const [show, setShow] = useState(false);
-  const [data, setData] = useState(payLoad);
+  const [data, setData] = useState(payload);
 
   return (
     <KeyboardAwareScrollView>
@@ -70,6 +68,8 @@ const UnitPrice = ({ route, navigation }) => {
             onPress={() => {
               navigation.navigate("metdhodPay", { pricesPayload: payload, user });
             }}
+            disabled={!Object.keys(payload)[selectedServices.length-1]}
+            disabledStyle={{backgroundColor: "#16b98d"}}
           />
         </View>
       </View>
