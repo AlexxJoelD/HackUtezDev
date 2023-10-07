@@ -27,7 +27,7 @@ const RentStack = () => {
             <Stack.Screen
                 name='services'
                 component={Services}
-                options={{ title: 'Selecciona uno o mas servicios' }}
+                options={{ title: 'Servicios' }}
             />
             <Stack.Screen
                 name='unitPrice'

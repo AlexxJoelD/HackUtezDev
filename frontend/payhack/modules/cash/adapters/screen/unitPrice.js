@@ -69,7 +69,6 @@ const UnitPrice = ({ route, navigation }) => {
               navigation.navigate("metdhodPay", { pricesPayload: payload, user });
             }}
             disabled={!Object.keys(payload)[selectedServices.length-1]}
-            disabledStyle={{backgroundColor: "#16b98d"}}
           />
         </View>
       </View>

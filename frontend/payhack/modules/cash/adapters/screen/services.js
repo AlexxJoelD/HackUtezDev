@@ -23,6 +23,17 @@ export default function Services({ navigation, route: { params: { user } } }) {
     <KeyboardAwareScrollView>
       <View style={styles.viewForm}>
         <View style={styles}>
+          <Text
+          style={{
+            textAlign: 'center',
+            fontSize: 30,
+            fontWeight: 'bold',
+            color: '#1AA07B',
+            marginBottom: 20
+          }}
+          >
+            Selecciona uno o más servicios
+          </Text>
           {servicios.map((servicio) => (
             <TouchableOpacity
               key={servicio}
@@ -38,6 +49,7 @@ export default function Services({ navigation, route: { params: { user } } }) {
                 backgroundColor: selectedServices.includes(servicio)
                   ? "#1AA07B"
                   : "white",
+                  marginVertical: 10
               }}
             >
               <Text
@@ -45,13 +57,19 @@ export default function Services({ navigation, route: { params: { user } } }) {
                   color: selectedServices.includes(servicio)
                     ? "white"
                     : "black",
+                    textAlign: 'center'
                 }}
               >
                 {servicio}
               </Text>
             </TouchableOpacity>
           ))}
-          <Text>Has seleccionado: {selectedServices.join(", ")}</Text>
+          <Text
+          style={{
+            marginTop: 10,
+            marginBottom: 10
+          }}
+          >Has seleccionado: {selectedServices.join(", ")}</Text>
         </View>
 
         <Button
