@@ -3,24 +3,25 @@ import React, {useState} from 'react'
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import Loading from "../../../../kernel/components/Loading";
-import {useNavigation} from "@react-navigation/native";
 import {Button, Icon, Input} from "@rneui/base";
 
 
-const Home = ({navigation, route:{params:{user}}}) => {
+const MethodPay = ({navigation, route}) => {
 
-    const [error, setError] = useState(user)
+    console.log(route.params);
+    const pricePayload = route.params;
+    const {user} = route.params;
+
+    console.log('MethodPay -> user', JSON.stringify(user));
+
     const [show, setShow] = useState(false);
-    const [data, setData] = useState(user);
-
-    const changePayLoad = (e, type) => {
-        setData({...data, [type]: e.nativeEvent.text})
-    }
+    const [data, setData] = useState(false);
 
 
     const create = () => {
-        navigation.navigate('services', {user:user})
+        console.log('Code ->' + JSON.stringify(data));
     }
+
 
     return (
         <KeyboardAwareScrollView>
@@ -33,15 +34,32 @@ const Home = ({navigation, route:{params:{user}}}) => {
                         fontWeight: 'bold',
                         color: '#1AA07B',
                         marginVertical: 15
-                    }}>Hola {data.name}</Text>
-
+                    }}>Metodo de pago</Text>
 
                     <Button
-                        title='Siguiente'
+                        title='Tarjeta'
                         containerStyle={styles.btnContainer}
                         buttonStyle={styles.btn}
                         onPress={create}
                     />
+
+                    <Button
+                        title='Paypal'
+                        containerStyle={styles.btnContainer}
+                        buttonStyle={styles.btn}
+                        onPress={create}
+                    />
+
+                    <Button
+                        title='Tienda fisica'
+                        containerStyle={styles.btnContainer}
+                        buttonStyle={styles.btn}
+                        onPress={() => {
+                            navigation.navigate("formCash", {
+                                pricePayload,
+                                user: user,
+                            });
+                        }}/>
                 </View>
             </View>
             <Loading show={false} text='Registrando'/>
@@ -50,7 +68,7 @@ const Home = ({navigation, route:{params:{user}}}) => {
     )
 }
 
-export default Home
+export default MethodPay
 
 const styles = StyleSheet.create({
     logo: {

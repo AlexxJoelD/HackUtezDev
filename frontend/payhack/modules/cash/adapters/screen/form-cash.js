@@ -7,7 +7,9 @@ import axios from "../../../../kernel/http-client.gateway";
 import {Button, Icon, Input} from "@rneui/base";
 
 
-const FormCash = ({navigation, route: {params: {user}}}) => {
+const FormCash = ({navigation, route: {params: {user, pricePayload}}}) => {
+
+    console.log('FormCash -> user', JSON.stringify(user));
 
 
     const [error, setError] = useState({})
